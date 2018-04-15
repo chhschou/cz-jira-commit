@@ -1,4 +1,5 @@
 var inquirer = require('inquirer')
+const { logWork } = require('./log-work')
 
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
@@ -32,8 +33,8 @@ function prompter(cz, commit) {
     {
       type: 'input',
       name: 'message',
-      message: 'GitHub commit message (required):\n',
-      validate: function(input) {
+      message: 'Git commit message (required):\n',
+      validate: function (input) {
         if (!input) {
           return 'empty commit message';
         } else {
@@ -43,55 +44,48 @@ function prompter(cz, commit) {
     },
     {
       type: 'input',
-      name: 'issues',
-      message: 'Jira Issue ID(s) (required):\n',
-      validate: function(input) {
+      name: 'issue',
+      message: 'Jira Issue ID (required):\n',
+      validate: function (input) {
         if (!input) {
-          return 'Must specify issue IDs, otherwise, just use a normal commit message';
+          return 'Must specify issue ID, otherwise, just use a token i.e. nojira';
         } else {
           return true;
         }
       }
     },
-    {
-      type: 'input',
-      name: 'workflow',
-      message: 'Workflow command (testing, closed, etc.) (optional):\n',
-      validate: function(input) {
-        if (input && input.indexOf(' ') !== -1) {
-          return 'Workflows cannot have spaces in smart commits. If your workflow name has a space, use a dash (-)';
-        } else {
-          return true;
-        }
-      }
-    },
+    // {
+    //   type: 'input',
+    //   name: 'workflow',
+    //   message: 'Workflow command (testing, closed, etc.) (optional):\n',
+    //   validate: function(input) {
+    //     if (input && input.indexOf(' ') !== -1) {
+    //       return 'Workflows cannot have spaces in smart commits. If your workflow name has a space, use a dash (-)';
+    //     } else {
+    //       return true;
+    //     }
+    //   }
+    // },
     {
       type: 'input',
       name: 'time',
       message: 'Time spent (i.e. 3h 15m) (optional):\n'
     },
-    {
-      type: 'input',
-      name: 'comment',
-      message: 'Jira comment (optional):\n'
-    },
+    // {
+    //   type: 'input',
+    //   name: 'comment',
+    //   message: 'Jira comment (optional):\n'
+    // },
   ]).then((answers) => {
-    formatCommit(commit, answers);
+    const msg = formatCommit(answers);
+    commit(msg);
+    if (answers.issue && answers.time) logWork(answers.issue, answers.time);
   });
 }
 
-function formatCommit(commit, answers) {
-  commit(filter([
-    answers.message,
-    answers.issues,
-    answers.workflow ? '#' + answers.workflow : undefined,
-    answers.time ? '#time ' + answers.time : undefined,
-    answers.comment ? '#comment ' + answers.comment : undefined,
-  ]).join(' '));
-}
+function formatCommit(answers) {
+  let commitMsg = '';
+  if (answers.issue) commitMsg = commitMsg.concat(`[${answers.issue}] `);
 
-function filter(array) {
-  return array.filter(function(item) {
-    return !!item;
-  });
+  return commitMsg.concat(answers.message);
 }
