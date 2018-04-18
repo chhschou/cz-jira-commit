@@ -1,7 +1,7 @@
 {
-  "name": "cz-jira-smart-commit",
-  "version": "2.0.1",
-  "description": "A commitizen adapter for Jira smart commits",
+  "name": "cz-jira-commit",
+  "version": "0.1.0",
+  "description": "A commitizen adapter for Jira issue management using Jira Rest API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon --exec \"npm run test\"",
@@ -12,23 +12,23 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/commitizen/cz-jira-smart-commit.git"
+    "url": "git+https://github.com/chhschou/cz-jira-commit.git"
   },
   "keywords": [
     "commitizen",
     "commitizen adapter",
-    "jira",
-    "jira smart commit"
+    "jira"
   ],
-  "author": "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
+  "author": "Chris Chou <chhschou@gmail.com>",
   "contributors": [
+    "Kent C. Dodds <kent@doddsfamily.us> (http://kentcdodds.com/)",
     "Jane Kim <jane@janekim.me> (http://janekim.me)"
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/commitizen/cz-jira-smart-commit/issues"
+    "url": "https://github.com/chhschou/cz-jira-commit/issues"
   },
-  "homepage": "https://github.com/commitizen/cz-jira-smart-commit#readme",
+  "homepage": "https://github.com/chhschou/cz-jira-commit#readme",
   "devDependencies": {
     "babel": "5.8.21",
     "chai": "3.2.0",
