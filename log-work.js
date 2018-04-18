@@ -37,7 +37,7 @@ const _createDefaultJiraClient = () => {
             fileContent.username,
             fileContent.password
         )
-    } else throw 'no ${HOME}/.jira.json'
+    } else throw 'no ${HOME}/.jira.config.json'
 }
 
 const jira = _createDefaultJiraClient()
