@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "Installing Commitizen Globally"
 npm install -g commitizen
-echo "Installing JIRA smart commits"
-npm install -g cz-jira-smart-commit
+echo "Installing JIRA commits"
+npm install -g cz-jira-commit
 echo "Creating a global config file"
-echo '{ "path": "/usr/local/lib/node_modules/cz-jira-smart-commit/" }' > ~/.czrc
+echo '{ "path": "$(npm root -g)/cz-jira-commit/" }' > ~/.czrc
