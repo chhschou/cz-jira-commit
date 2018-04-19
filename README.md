@@ -39,12 +39,12 @@ commitizen init cz-jira-commit
 ### Day to day work
 
 Instead of `git commit -m 'Your message'`, you type: `git cz` with this adapter and it prompts you for:
+- [x] commit message
+- [x] Jira Issue Key
+- [ ] Workflow command
+- [x] Time Spent
+- [ ] Comment
 
-- commit message
-- Jira Issue Key(s)
-- Workflow command
-- Time Spent
-- Comment
+It generates a commit like: [<jira issue key>] <commit message>
 
-And generates your commit based on that.
-
+It will also attempt to action any workflow commands, log hours, and put in any comments.
