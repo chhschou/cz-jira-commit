@@ -47,4 +47,4 @@ Instead of `git commit -m 'Your message'`, you type: `git cz` with this adapter 
 
 It generates a commit like: [<jira issue key>] <commit message>
 
-It will also attempt to action any workflow commands, log hours, and put in any comments.
+It will also attempt to action any workflow commands, log hours, and insert comments.
