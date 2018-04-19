@@ -1,5 +1,7 @@
-var inquirer = require('inquirer')
-const { logWork } = require('./log-work')
+const { execSync } = require('child_process');
+const { basename } = require('path');
+var inquirer = require('inquirer');
+const { add } = require('./jira');
 
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
@@ -45,14 +47,7 @@ function prompter(cz, commit) {
     {
       type: 'input',
       name: 'issue',
-      message: 'Jira Issue ID (required):\n',
-      validate: function (input) {
-        if (!input) {
-          return 'Must specify issue ID, otherwise, just use a token i.e. nojira';
-        } else {
-          return true;
-        }
-      }
+      message: 'Jira Issue ID (optional):\n',
     },
     // {
     //   type: 'input',
@@ -69,7 +64,10 @@ function prompter(cz, commit) {
     {
       type: 'input',
       name: 'time',
-      message: 'Time spent (i.e. 3h 15m) (optional):\n'
+      message: 'Time spent (i.e. 3h 15m) (optional):\n',
+      when: function (answers) {
+        return answers.issue && answers.issue.match(/[A-Za-z]+-\d+/);
+      }
     },
     // {
     //   type: 'input',
@@ -78,14 +76,15 @@ function prompter(cz, commit) {
     // },
   ]).then((answers) => {
     const msg = formatCommit(answers);
+    const repo = basename(execSync('git rev-parse --show-toplevel', { encoding: 'utf8' }).trim());
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
+    add(repo, branch, answers);
     commit(msg);
-    if (answers.issue && answers.time) logWork(answers.issue, answers.time);
   });
 }
 
 function formatCommit(answers) {
-  let commitMsg = '';
-  if (answers.issue) commitMsg = commitMsg.concat(`[${answers.issue}] `);
+  const commitMsg = answers.issue ? `[${answers.issue}] ` : '';
 
   return commitMsg.concat(answers.message);
 }
