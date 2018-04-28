@@ -25,7 +25,8 @@ module.exports = {
         if (fileContent[repositoryName].hasOwnProperty(branchName)) fileContent[repositoryName][branchName].push(cmt)
         else fileContent[repositoryName][branchName] = [cmt]
         fs.writeFileSync(jiraActionsFilePath, JSON.stringify(fileContent, null, 2))
-        console.log(`Updated ${jiraActionsFilePath}`, cmt)
+        console.log(`Updated ${jiraActionsFilePath}`)
+        console.log(JSON.stringify(cmt, null, 2))
     },
     onPush: function () {
         if (fs.existsSync(jiraActionsFilePath)) {
