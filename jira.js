@@ -2,6 +2,7 @@ const { O_APPEND, O_CREAT } = require('constants');
 const os = require('os')
 const path = require('path')
 const fs = require('fs')
+const chalk = require('chalk')
 const { logWork } = require('./log-work')
 const { getRepositoryName, getBranchName } = require('./git');
 
@@ -25,8 +26,7 @@ module.exports = {
         if (fileContent[repositoryName].hasOwnProperty(branchName)) fileContent[repositoryName][branchName].push(cmt)
         else fileContent[repositoryName][branchName] = [cmt]
         fs.writeFileSync(jiraActionsFilePath, JSON.stringify(fileContent, null, 2))
-        console.log(`Updated ${jiraActionsFilePath}`)
-        console.log(JSON.stringify(cmt, null, 2))
+        console.log(chalk.green(`Updated ${jiraActionsFilePath}`, cmt))
     },
     onPush: function () {
         if (fs.existsSync(jiraActionsFilePath)) {
@@ -37,7 +37,7 @@ module.exports = {
                 fileContent[repositoryName][branchName]
                     .map((cmt) => {
                         return actionCmt(cmt)
-                            .then((res) => console.log('action applied', cmt))
+                            .then((res) => console.log(chalk.green('Jira action applied', cmt)))
                             .catch((err) => console.error(err))
                     })
 
