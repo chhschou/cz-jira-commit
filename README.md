@@ -50,6 +50,18 @@ An example `${HOME}/jira.config.json` looks like:
 }
 ```
 
+### Pre-push hook
+A pre-push hook needs to call `cz-jira-commit push`. Recommended to use `pre-push` package and add to your `package.json`:
+```
+{
+  "scripts": {
+    "jira": "cz-jira-commit push"
+  },
+  "pre-push": [
+    "jira"
+  ],
+}
+```
 
 ### Day to day work
 
