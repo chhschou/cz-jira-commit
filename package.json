@@ -11,6 +11,9 @@
     "tag:beta": "with-package npm dist-tag add pkg.name@pkg.version beta",
     "jira-commit": "echo $PWD"
   },
+  "bin": {
+    "cz-jira-commit": "bin/index.js"
+  },
   "pre-push": [
     "jira-commit"
   ],
@@ -47,6 +50,7 @@
     "moment": "^2.22.1",
     "spawn-sync": "^1.0.15",
     "tough-cookie-filestore": "0.0.1",
-    "which": "1.2.x"
+    "which": "1.2.x",
+    "yargs": "^11.0.0"
   }
 }

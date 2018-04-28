@@ -1,7 +1,5 @@
-const { execSync } = require('child_process');
-const { basename } = require('path');
 var inquirer = require('inquirer');
-const { add } = require('./jira');
+const { addCmt } = require('./jira');
 
 // This can be any kind of SystemJS compatible module.
 // We use Commonjs here, but ES6 or AMD would do just
@@ -48,6 +46,20 @@ function prompter(cz, commit) {
       type: 'input',
       name: 'issue',
       message: 'Jira Issue ID (optional):\n',
+      validate: function (input) {
+        if (!input || (input.match(/[A-Z]+-\d+/))) {
+          return true;
+        } else {
+          return 'invalid jira issue ID';
+        }
+      },
+      filter: function (input) {
+        if (input && input.match(/[A-Z]+-\d+/)) {
+          return input.match(/[A-Z]+-\d+/)[0]
+        }
+
+        return input
+      }
     },
     // {
     //   type: 'input',
@@ -75,11 +87,9 @@ function prompter(cz, commit) {
     //   message: 'Jira comment (optional):\n'
     // },
   ]).then((answers) => {
-    const msg = formatCommit(answers);
-    const repo = basename(execSync('git rev-parse --show-toplevel', { encoding: 'utf8' }).trim());
-    const branch = execSync('git rev-parse --abbrev-ref HEAD', { encoding: 'utf8' }).trim();
-    add(repo, branch, answers);
-    commit(msg);
+    const cmtMsg = formatCommit(answers);
+    if (answers.issue) addCmt(answers);
+    commit(cmtMsg);
   });
 }
 
